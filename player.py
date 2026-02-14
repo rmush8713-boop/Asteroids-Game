@@ -32,10 +32,6 @@ class Player(CircleShape):
         rotated_shot = shot.velocity.rotate(self.rotation)
         shot.velocity = rotated_shot * PLAYER_SHOOT_SPEED
 
-
-        
-        
-
     def update(self, dt):
         if self.timer > 0:
             self.timer -= dt

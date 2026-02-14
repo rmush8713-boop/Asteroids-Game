@@ -12,6 +12,7 @@ def main():
     pygame.init()
     
     score = 0
+    lives = 3
     font = pygame.font.Font("calibri.ttf", 32)
     
 
@@ -35,9 +36,11 @@ def main():
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     while True:
 
-        text = font.render(f"Score: {score}", 1, "white")
+        score_text = font.render(f"Score: {score}", 1, "white")
+        lives_text = font.render(f"Lives: {lives}", 1, "white")
         screen.fill("black")
-        screen.blit(text, (0, 0))
+        screen.blit(score_text, (0, 0))
+        screen.blit(lives_text, (0, 32))
 
         dt = clock.tick(60) / 1000
         log_state()
@@ -58,9 +61,13 @@ def main():
                     score += 1
 
             if player.collides_with(asteroid):
-                log_event("player_hit")
-                print(f"Game over!\nYou get {score} score!")
-                sys.exit()
+                if lives > 0:
+                    lives -= 1
+                    asteroid.kill()
+        if lives <= 0:
+            log_event("player_hit")
+            print(f"Game over!\nYou get {score} score!")
+            sys.exit()
 
         pygame.display.flip()
         clock.tick(60)
